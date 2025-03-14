@@ -1,7 +1,7 @@
 /**
  * This class acts as a struct helper which contains the result of an operation.
  *
- * @author Saviz
+ * @author Saviz Mohammadi
  * @version 1.0
  */
 public class Outcome<T> {

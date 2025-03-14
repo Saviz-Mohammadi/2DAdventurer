@@ -12,8 +12,11 @@ set(SRC_FILES
         "./src/GamePanel.java"
         "./src/ResourceManager.java"
         "./src/Outcome.java"
+        "./src/Direction.java"
         "./src/KeyboardInputs.java"
-        "./src/MouseInputs.java")
+        "./src/MouseInputs.java"
+        "./src/Entity.java"
+        "./src/Player.java")
 
 add_jar("${PROJECT_NAME}"
         SOURCES ${SRC_FILES}

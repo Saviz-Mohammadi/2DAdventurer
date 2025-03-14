@@ -6,7 +6,7 @@ import java.io.*;
 /**
  * This class acts as a central unit for anything that has to do with resources.
  *
- * @author Saviz
+ * @author Saviz Mohammadi
  * @version 1.0
  */
 public class ResourceManager {
@@ -14,7 +14,7 @@ public class ResourceManager {
     // PROPERTIES:
     private HashMap<String, BufferedImage> imageMap = null;
 
-    // Volatile ensures thread safety:
+    // NOTE (SAVIZ): Volatile ensures thread safety:
     private static volatile ResourceManager instance;
 
     private ResourceManager() {
@@ -23,28 +23,25 @@ public class ResourceManager {
         this.imageMap = new HashMap<>();
     }
 
-    public Outcome<Void> init() {
-
-        Outcome<Void> outcome = new Outcome<Void>();
+    public void init() {
 
         try {
 
             // IMAGES:
-            BufferedImage image1 = ImageIO.read(new File("./resources/Image_Files/Other/Characters/Player/Player_01.png"));
+            BufferedImage image1 = ImageIO.read(new File("./resources/image_files/other/characters/player/player_IDLE_0.png"));
+            BufferedImage image2 = ImageIO.read(new File("./resources/image_files/other/characters/player/player_IDLE_1.png"));
+            BufferedImage image3 = ImageIO.read(new File("./resources/image_files/other/characters/player/player_MOVING_0.png"));
+            BufferedImage image4 = ImageIO.read(new File("./resources/image_files/other/characters/player/player_MOVING_1.png"));
 
-            this.imageMap.put("up_1", image1);
-
-            return(outcome);
+            this.imageMap.put("player_IDLE_0", image1);
+            this.imageMap.put("player_IDLE_1", image2);
+            this.imageMap.put("player_MOVING_0", image3);
+            this.imageMap.put("player_MOVING_1", image4);
         }
 
         catch (IOException exception) {
 
-            outcome.isSuccessful = false;
-            outcome.message = exception.getMessage();
-
             exception.printStackTrace();
-
-            return(outcome);
         }
     }
 

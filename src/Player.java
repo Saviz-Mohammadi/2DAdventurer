@@ -7,68 +7,24 @@ import java.io.*;
 
 public class Player extends Entity {
 
-    // ENUM:
-    private enum PlayerState {
-
-        IDLE(0), MOVING(1);
-
-        public static String getStateString(int number) {
-
-            for (PlayerState playerState : PlayerState.values()) {
-
-                if (playerState.value == number) {
-
-                    return(palyerState.toString());
-                }
-            }
-
-            throw new IllegalArgumentException("Unexpected player state value: " + value);
-        }
-
-        @Override
-        public String toString() {
-
-            String result = "";
-
-            switch (this) {
-
-                case IDLE:
-                    result = "IDLE";
-                    break;
-                case MOVING:
-                    result = "MOVING";
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unexpected player state: " + this);
-            }
-
-            return(result);
-        }
-    }
-
     // DEPENDENCIES:
-    GamePanel gamePanel = null;
+    Game game = null;
 
     // PROPERTIES:
-    PlayerState playerState = PlayerState.IDLE;
     private BufferedImage[][] animations;
+    private int animationTick = 0;
+    private int animationIndex = 0;
+    private int animationSpeed = 15;
 
     public Player() {
 
         super();
-//                 this.screenXCoordinate = (this.gamePanel.screenWidth / 2) - (gamePanel.scaledCellSize / 2);
-//                 this.screenYCoordinate = (this.gamePanel.screenHeight / 2) - (gamePanel.scaledCellSize / 2);
-//
-//                 // The values for 'meshCollider' are hand picked. You can change them if you like:
-//                 this.collider = new Collider();
-//                 this.collider.isEnabled = true;
-//                 this.collidingArea = new Rectangle(0, 0, gamePanel.scaledCellSize, gamePanel.scaledCellSize);
     }
 
-    public void init(GamePanel gamePanel, float xCoordinate, float yCoordinate, int movementSpeed) {
+    public void init(Game game, float xCoordinate, float yCoordinate, int movementSpeed) {
 
         // DEPENDENCIES:
-        this.gamePanel = gamePanel;
+        this.game = game;
 
         // PROPERTIES:
         super.xCoordinate = xCoordinate;
@@ -76,7 +32,7 @@ public class Player extends Entity {
         super.movementSpeed = movementSpeed;
 
         // ANIMATIONS:
-        // NOTE (SAVIZ): For we assume that there are only 2 states: 'IDLE' and 'MOVING', each having only 2 images:
+        // NOTE (SAVIZ): We assume that there are only 2 states: 'IDLE' and 'MOVING', each having only 2 images:
         this.animations = new BufferedImage[2][2];
 
         for (int stateIndex = 0; stateIndex < this.animations.length; stateIndex++) {
@@ -84,155 +40,96 @@ public class Player extends Entity {
             for (int imageIndex = 0; imageIndex < this.animations[stateIndex].length; imageIndex++) {
 
                 // NOTE (SAVIZ): This will only work under the condition that image and file naming/management is absolutely perfect ("which it should be"):
-                String key = "player_" + PlayerState.getStateString(stateIndex) + "_" + imageIndex;
+                String key = "player_" + Entity.State.getStateString(stateIndex) + "_" + imageIndex;
 
                 animations[stateIndex][imageIndex] = ResourceManager.getInstance().getImageUsingKey(key);
             }
         }
     }
 
-        public void update() {
+    public void update() {
 
-            updatePosition();
-            updateAnimationTick();
-            updateState();
+        updateState();
+        updatePosition();
+        updateAnimation();
+    }
 
-                // Movement check:
-//                 boolean isMoving = this.gamePanel.getInputHandler().isMovingUp || this.gamePanel.getInputHandler().isMovingLeft || this.gamePanel.getInputHandler().isMovingDown || this.gamePanel.getInputHandler().isMovingRight;
-//
-//                 if(!isMoving) {
-//
-//                         return;
-//                 }
+    public void render(Graphics graphics) {
 
+        switch(super.direction) {
 
-                // Collision check:
-//                 if(collider.isColliding(this, this.collidingArea, this.gamePanel) == false) {
-//
-//                         switch(super.getDirection()) {
-//
-//                                 case UP:
-//                                         super.setWorldYCoordinate(super.getWorldYCoordinate() + super.getMovementSpeed());
-//                                         break;
-//                                 case LEFT:
-//                                         super.setWorldXCoordinate(super.getWorldXCoordinate() + super.getMovementSpeed());
-//                                         break;
-//                                 case DOWN:
-//                                         super.setWorldYCoordinate(super.getWorldYCoordinate() - super.getMovementSpeed());
-//                                         break;
-//                                 case RIGHT:
-//                                         super.setWorldXCoordinate(super.getWorldXCoordinate() - super.getMovementSpeed());
-//                                         break;
-//                                 default:
-//                                         break;
-//                         }
-//
-//                         // Sprite Logic:
-//                         spriteCounter++;
-//
-//                         // Every 12 frames change the variation:
-//                         if(spriteCounter > 12) {
-//
-//                                 switch(spriteVariation) {
-//                                         case 1:
-//                                                 spriteVariation = 2;
-//                                                 break;
-//                                         case 2:
-//                                                 spriteVariation = 1;
-//                                                 break;
-//                                         default:
-//                                                 break;
-//                                 }
-//
-//                                 spriteCounter = 0;
-//                         }
-//                 }
+            case EAST:
+                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)super.xCoordinate, (int)super.yCoordinate, 42, 42, null);
+                break;
+            case WEST:
+                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)super.xCoordinate, (int)super.yCoordinate, -42, 42, null);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void updateState() {
+
+        KeyboardInputs keyboardInputs = this.game.getKeyboardInputs();
+
+        boolean isMoving = keyboardInputs.isMovingUp || keyboardInputs.isMovingLeft || keyboardInputs.isMovingDown || keyboardInputs.isMovingRight;
+
+        if(isMoving) {
+
+            super.state = Entity.State.MOVING;
         }
 
-        public void render(Graphics graphics) {
+        else {
 
-                BufferedImage bufferedImage = null;
-
-                switch(super.getDirection()) {
-
-                        case UP:
-                                if(spriteVariation == 1) {
-
-                                        bufferedImage = super.getSpriteMap().get("up_1");
-                                }
-
-                                if(spriteVariation == 2) {
-
-                                        bufferedImage = super.getSpriteMap().get("up_2");
-                                }
-                                break;
-                        case LEFT:
-                                if(spriteVariation == 1) {
-
-                                        bufferedImage = super.getSpriteMap().get("left_1");
-                                }
-
-                                if(spriteVariation == 2) {
-
-                                        bufferedImage = super.getSpriteMap().get("left_2");
-                                }
-                                break;
-                        case DOWN:
-                                if(spriteVariation == 1) {
-
-                                        bufferedImage = super.getSpriteMap().get("down_1");
-                                }
-
-                                if(spriteVariation == 2) {
-
-                                        bufferedImage = super.getSpriteMap().get("down_2");
-                                }
-                                break;
-                        case RIGHT:
-                                if(spriteVariation == 1) {
-
-                                        bufferedImage = super.getSpriteMap().get("right_1");
-                                }
-
-                                if(spriteVariation == 2) {
-
-                                        bufferedImage = super.getSpriteMap().get("right_2");
-                                }
-                                break;
-                        default:
-                                break;
-                }
-
-            graphics.drawImage(this.animations[playerAction][aniIndex], (int)super.xCoordinate, (int)super.yCoordinate, 21, 21, null);
+            super.state = Entity.State.IDLE;
         }
+    }
 
     private void updatePosition() {
 
-        KeyboardInputs keyboardInputs = this.gamePanel.getKeyboardInputs();
+        KeyboardInputs keyboardInputs = this.game.getKeyboardInputs();
 
         // NOTE (SAVIZ): The reason why we do it this way instead of using a switch statement to allow simultaneous horizontal and vertical movement. If we use a switch statement we will only be able to move in one direction at any given time.
         if(keyboardInputs.isMovingLeft && !keyboardInputs.isMovingRight) {
 
+            super.direction = Direction.WEST;
             super.xCoordinate -= super.movementSpeed;
-            moving = true;
         }
 
         else if(keyboardInputs.isMovingRight && !keyboardInputs.isMovingLeft) {
 
+            super.direction = Direction.EAST;
             super.xCoordinate += super.movementSpeed;
-            moving = true;
         }
 
         if(keyboardInputs.isMovingUp && !keyboardInputs.isMovingDown) {
 
+            // We do not change our dircetion here.
             super.yCoordinate -= super.movementSpeed;
-            moving = true;
         }
 
         else if(keyboardInputs.isMovingDown && !keyboardInputs.isMovingUp) {
 
+            // We do not change our direction here.
             super.yCoordinate += super.movementSpeed;
-            moving = true;
+        }
+    }
+
+    private void updateAnimation() {
+
+        this.animationTick++;
+
+        if (this.animationTick >= this.animationSpeed) {
+
+            this.animationTick = 0;
+
+            this.animationIndex++;
+
+            if (this.animationIndex >= this.animations[super.state.ordinal()].length) {
+
+                this.animationIndex = 0;
+            }
         }
     }
 }

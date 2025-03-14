@@ -3,7 +3,7 @@ import java.awt.event.*;
 /**
  * This class provides input handling for our game.
  *
- * @author Saviz
+ * @author Saviz Mohammadi
  * @version 1.0
  */
 public class KeyboardInputs implements KeyListener {
@@ -20,6 +20,7 @@ public class KeyboardInputs implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
+
     }
 
     @Override
