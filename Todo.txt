@@ -1,0 +1,1 @@
+1- Add a gitignore in build file to stop output folder from being submitted.
