@@ -12,6 +12,7 @@ public class GamePanel extends JPanel {
     // DEPENDENCIES:
     KeyboardInputs keyboardInputs = null;
     MouseInputs mouseInpus = null;
+    Player palyer = null;
 
     public GamePanel() {
 
@@ -33,12 +34,16 @@ public class GamePanel extends JPanel {
         addMouseListener(this.mouseInpus);
         addMouseMotionListener(this.mouseInpus);
 
+        // PLAYER:
+        this.player = new Player();
+        player.init(this, 100, 100, 5);
+
         return(outcome);
     }
 
     public void update() {
 
-        // Testing...
+        player.update();
     }
 
     @Override
@@ -46,6 +51,19 @@ public class GamePanel extends JPanel {
 
         super.paintComponent(graphics);
 
-        graphics.drawImage(ResourceManager.getInstance().getImageUsingKey("up_1"), 0, 0, null);
+        player.render(graphics);
+
+//         graphics.drawImage(ResourceManager.getInstance().getImageUsingKey("up_1"), 0, 0, null);
+    }
+
+    // GETTERS
+    public KeyboardInputs getKeyboardInputs() {
+
+        return(this.keyboardInputs);
+    }
+
+    public MouseInputs getMouseInputs() {
+
+        return(this.mouseInpus);
     }
 }

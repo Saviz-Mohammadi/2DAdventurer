@@ -4,12 +4,14 @@ import java.awt.image.*;
 import javax.imageio.*;
 import java.util.*;
 
-public class Entity {
+public abstract class Entity {
 
-        // Properties:
-        int worldXCoordinate = 0;
-        int worldYCoordinate = 0;
-        int movementSpeed = 4;
-        HashMap<String, BufferedImage> spriteMap = new HashMap<>();
-        Direction direction;
+    // PROPERTIES:
+    protected float xCoordinate = 0;
+    protected float yCoordinate = 0;
+    protected int movementSpeed = 0;
+
+    public Entity() {
+
+    }
 }
