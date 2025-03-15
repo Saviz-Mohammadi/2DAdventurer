@@ -1,1 +1,3 @@
 -- Resolution should be 1280x720 this gives us a 16:9 aspect ratio. Have your assets be 16x16. For now we will just fill the extra spots with black bars.
+-- A very good website with resulotions in mind: https://pacoup.com/2011/06/12/list-of-true-169-resolutions/
+-- For attacking you can have the player spit out blocks of lasers without doing anything about the animation.

@@ -14,15 +14,6 @@ public class Game implements Runnable {
     private final int UPS = 200;
     private boolean operatingSystemIsUnix = false;
 
-    // SETTINGS:
-    public final static int TILE_DEFAULT_SIZE = 16;
-	public final static int SCALE = 3;
-	public final static int TILES_IN_WIDTH = 26;
-	public final static int TILES_IN_HEIGHT = 14;
-	public final static int TILE_SCALED_SIZE = TILE_DEFAULT_SIZE * SCALE;
-	public final static int GAME_WIDTH = TILE_SCALED_SIZE * TILES_IN_WIDTH;
-	public final static int GAME_HEIGHT = TILE_SCALED_SIZE * TILES_IN_HEIGHT;
-
     // COMPONENTS:
     private Thread gameThread = null;
     private KeyboardInputs keyboardInputs = null;
@@ -59,6 +50,7 @@ public class Game implements Runnable {
 
         // RESOURCES:
         ResourceManager.getInstance().init();
+        SettingsManager.getInstance().init();
 
         // INPUTS:
         this.gamePanel.addKeyListener(this.keyboardInputs);
@@ -99,6 +91,9 @@ public class Game implements Runnable {
 
         this.gameFrame.setContentPane(this.backgroundPanel);
         this.gameFrame.setVisible(true);
+
+        // NOTE(SAVIZ): This needs to be called at the very end for input to work correctly:
+        this.gamePanel.requestFocus();
     }
 
     public void startGameLoop() {

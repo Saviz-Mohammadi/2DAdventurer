@@ -14,7 +14,7 @@ public class Player extends Entity {
     private BufferedImage[][] animations;
     private int animationTick = 0;
     private int animationIndex = 0;
-    private int animationSpeed = 15;
+    private int animationSpeed = 60;
 
     public Player() {
 

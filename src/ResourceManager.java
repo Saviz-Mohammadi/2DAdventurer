@@ -28,10 +28,10 @@ public class ResourceManager {
         try {
 
             // IMAGES:
-            BufferedImage image1 = ImageIO.read(new File("./resources/image_files/other/characters/player/player_IDLE_0.png"));
-            BufferedImage image2 = ImageIO.read(new File("./resources/image_files/other/characters/player/player_IDLE_1.png"));
-            BufferedImage image3 = ImageIO.read(new File("./resources/image_files/other/characters/player/player_MOVING_0.png"));
-            BufferedImage image4 = ImageIO.read(new File("./resources/image_files/other/characters/player/player_MOVING_1.png"));
+            BufferedImage image1 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0090.png"));
+            BufferedImage image2 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0090.png"));
+            BufferedImage image3 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0091.png"));
+            BufferedImage image4 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0092.png"));
 
             this.imageMap.put("player_IDLE_0", image1);
             this.imageMap.put("player_IDLE_1", image2);

@@ -11,6 +11,7 @@ set(SRC_FILES
         "./src/GameFrame.java"
         "./src/GamePanel.java"
         "./src/ResourceManager.java"
+        "./src/SettingsManager.java"
         "./src/Outcome.java"
         "./src/Direction.java"
         "./src/KeyboardInputs.java"
