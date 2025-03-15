@@ -7,31 +7,14 @@ import java.awt.*;
  * @author Saviz Mohammadi
  * @version 1.0
  */
-public class GameFrame{
-
-    private JFrame frame = null;
+public class GameFrame extends JFrame{
 
     public GameFrame() {
 
-        this.frame = new JFrame();
+        super();
     }
 
     public void init() {
 
-        this.frame.setTitle("2D Adventurer");
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.frame.setResizable(false);
-        this.frame.setLocationRelativeTo(null);
-        this.frame.setVisible(true);
-    }
-
-    public void addGamePanel(GamePanel gamePanel) {
-
-        this.frame.add(gamePanel);
-    }
-
-    public void pack() {
-
-        this.frame.pack();
     }
 }

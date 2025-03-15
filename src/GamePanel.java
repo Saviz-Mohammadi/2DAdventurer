@@ -14,15 +14,13 @@ public class GamePanel extends JPanel {
 
     public GamePanel() {
 
+        super();
     }
 
     public void init(Game game) {
 
         // DEPENDENCIES:
         this.game = game;
-
-        // SETTINGS:
-        this.setPreferredSize(new Dimension(1280, 800));
     }
 
     @Override

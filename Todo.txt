@@ -1,1 +1,1 @@
-1- Add a gitignore in build file to stop output folder from being submitted.
+-- Resolution should be 1280x720 this gives us a 16:9 aspect ratio. Have your assets be 16x16. For now we will just fill the extra spots with black bars.

@@ -14,18 +14,33 @@ public class Game implements Runnable {
     private final int UPS = 200;
     private boolean operatingSystemIsUnix = false;
 
+    // SETTINGS:
+    public final static int TILE_DEFAULT_SIZE = 16;
+	public final static int SCALE = 3;
+	public final static int TILES_IN_WIDTH = 26;
+	public final static int TILES_IN_HEIGHT = 14;
+	public final static int TILE_SCALED_SIZE = TILE_DEFAULT_SIZE * SCALE;
+	public final static int GAME_WIDTH = TILE_SCALED_SIZE * TILES_IN_WIDTH;
+	public final static int GAME_HEIGHT = TILE_SCALED_SIZE * TILES_IN_HEIGHT;
+
     // COMPONENTS:
     private Thread gameThread = null;
     private KeyboardInputs keyboardInputs = null;
     private MouseInputs mouseInpus = null;
     private Player player = null;
     private GamePanel gamePanel = null;
+    private JPanel backgroundPanel = null;
     private GameFrame gameFrame = null;
 
     public Game() {
 
         // THREAD:
         this.gameThread = new Thread(this);
+
+        if (System.getProperty("os.name").toLowerCase().contains("linux") || System.getProperty("os.name").toLowerCase().contains("mac")) {
+
+            this.operatingSystemIsUnix = true;
+        }
 
         // INPUTS:
         this.keyboardInputs = new KeyboardInputs();
@@ -34,8 +49,9 @@ public class Game implements Runnable {
         // PLAYER:
         this.player = new Player();
 
-        // FRAME & PANEL:
+        // FRAME & PANEL & LAYOUT:
         this.gamePanel = new GamePanel();
+        this.backgroundPanel = new JPanel();
         this.gameFrame = new GameFrame();
     }
 
@@ -52,18 +68,37 @@ public class Game implements Runnable {
         // PLAYER:
         this.player.init(this, 100, 100, 1);
 
-        // FRAME & PANEL:
+        // GAME PANEL:
         this.gamePanel.init(this);
+        this.gamePanel.setPreferredSize(new Dimension(1280, 720));
+        this.gamePanel.setFocusable(true);
+
+        // BACKGROUND PANEL:
+        this.backgroundPanel.setBackground(Color.BLACK);
+        this.backgroundPanel.setLayout(new GridBagLayout());
+        this.backgroundPanel.add(this.gamePanel, new GridBagConstraints());
+        this.backgroundPanel.setFocusable(false);
+
+        // FRAME:
         this.gameFrame.init();
-        this.gameFrame.addGamePanel(this.gamePanel);
-        this.gameFrame.pack();
-        this.gamePanel.requestFocus(); // For input to work correctly.
+        this.gameFrame.setTitle("2D Adventurer");
+        this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // OS:
-        if (System.getProperty("os.name").toLowerCase().contains("linux") || System.getProperty("os.name").toLowerCase().contains("mac")) {
+        GraphicsDevice graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 
-            this.operatingSystemIsUnix = true;
+        if (graphicsDevice.isFullScreenSupported()) {
+
+            this.gameFrame.setUndecorated(true);
+            graphicsDevice.setFullScreenWindow(this.gameFrame);
         }
+
+        else {
+
+            this.gameFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+
+        this.gameFrame.setContentPane(this.backgroundPanel);
+        this.gameFrame.setVisible(true);
     }
 
     public void startGameLoop() {
