@@ -18,6 +18,7 @@ public class Game implements Runnable {
     private Thread gameThread = null;
     private KeyboardInputs keyboardInputs = null;
     private MouseInputs mouseInpus = null;
+    private LevelManager levelManager = null;
     private Player player = null;
     private GamePanel gamePanel = null;
     private JPanel backgroundPanel = null;
@@ -36,6 +37,9 @@ public class Game implements Runnable {
         // INPUTS:
         this.keyboardInputs = new KeyboardInputs();
         this.mouseInpus = new MouseInputs();
+
+        // LEVELMANAGER:
+        levelManager = new LevelManager();
 
         // PLAYER:
         this.player = new Player();
@@ -56,6 +60,10 @@ public class Game implements Runnable {
         this.gamePanel.addKeyListener(this.keyboardInputs);
         this.gamePanel.addMouseListener(this.mouseInpus);
         this.gamePanel.addMouseMotionListener(this.mouseInpus);
+
+        // LEVELMANAGER:
+        this.levelManager.init(this);
+        this.levelManager.loadLevel(ResourceManager.getInstance().getImageUsingKey("level_1"));
 
         // PLAYER:
         this.player.init(this, 100, 100, 1);
@@ -157,6 +165,11 @@ public class Game implements Runnable {
     public MouseInputs getMouseInputs() {
 
         return(this.mouseInpus);
+    }
+
+    public LevelManager getLevelManager() {
+
+        return(this.levelManager);
     }
 
     public Player getPlayer() {

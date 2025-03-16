@@ -27,16 +27,26 @@ public class ResourceManager {
 
         try {
 
-            // IMAGES:
-            BufferedImage image1 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0090.png"));
-            BufferedImage image2 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0090.png"));
-            BufferedImage image3 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0091.png"));
-            BufferedImage image4 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0092.png"));
+            // LEVEL IMAGES:
+            BufferedImage level_image_1 = ImageIO.read(new File("./resources/image_files/levels/level_0001.png"));
 
-            this.imageMap.put("player_IDLE_0", image1);
-            this.imageMap.put("player_IDLE_1", image2);
-            this.imageMap.put("player_MOVING_0", image3);
-            this.imageMap.put("player_MOVING_1", image4);
+            this.imageMap.put("level_1", level_image_1);
+
+            // TILE IMAGES:
+            BufferedImage tile_image_1 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0017.png"));
+
+            this.imageMap.put("tile_0017");
+
+            // PLAYER IMAGES:
+            BufferedImage player_image_1 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0090.png"));
+            BufferedImage player_image_2 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0090.png"));
+            BufferedImage player_image_3 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0091.png"));
+            BufferedImage player_image_4 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0092.png"));
+
+            this.imageMap.put("player_IDLE_0", player_image_1);
+            this.imageMap.put("player_IDLE_1", player_image_2);
+            this.imageMap.put("player_MOVING_0", player_image_3);
+            this.imageMap.put("player_MOVING_1", player_image_4);
         }
 
         catch (IOException exception) {
