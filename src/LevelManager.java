@@ -16,7 +16,7 @@ public class LevelManager {
 
     public LevelManager() {
 
-        this.tiles = new Tile[SettingsManager.getInstance().ROWS][SettingsManager.getInstance().COLUMNS];
+        this.tiles = new Tile[SettingsManager.getInstance().COLUMNS][SettingsManager.getInstance().ROWS];
     }
 
     public void init(Game game) {
@@ -51,7 +51,7 @@ public class LevelManager {
 
                     switch(green) {
 
-                        case 0:
+                        case 255:
                             tile.xCoordinate = xCoordinate * offest;
                             tile.yCoordinate = yCoordinate * offest;
                             tile.imageKey = "tile_0017";
@@ -87,15 +87,19 @@ public class LevelManager {
 
     public void render(Graphics graphics) {
 
-
         // TODO(SAVIZ): For transitioning between levels, what you can do is add a boolean 'isLoading' to the levelmanager and have it be changed during teh loading method. Here you can check it and fully withdraw if we are in loading phase.
-        for (int yCoordinate = 0; yCoordinate < levelImage.getHeight(); yCoordinate++) {
 
-            for (int xCoordinate = 0; xCoordinate < levelImage.getWidth(); xCoordinate++) {
+        int height = SettingsManager.getInstance().ROWS;
+        int width = SettingsManager.getInstance().COLUMNS;
+        int scale = SettingsManager.getInstance().TILE_SCALED_SIZE;
+
+        for (int yCoordinate = 0; yCoordinate < height; yCoordinate++) {
+
+            for (int xCoordinate = 0; xCoordinate < width; xCoordinate++) {
 
                 Tile tile = tiles[xCoordinate][yCoordinate];
 
-                graphics.drawImage(ResourceManager.getInstance().getImageUsingKey(tile.imageKey), tile.xCoordinate, tile.yCoordinate, SettingsManager.getInstance().TILE_SCALED_SIZE, SettingsManager.getInstance().TILE_SCALED_SIZE, null);
+                graphics.drawImage(ResourceManager.getInstance().getImageUsingKey(tile.imageKey), tile.xCoordinate, tile.yCoordinate, scale, scale, null);
             }
         }
     }

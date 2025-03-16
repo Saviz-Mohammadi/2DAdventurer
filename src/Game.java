@@ -70,7 +70,10 @@ public class Game implements Runnable {
 
         // GAME PANEL:
         this.gamePanel.init(this);
-        this.gamePanel.setPreferredSize(new Dimension(1280, 720));
+        this.gamePanel.setPreferredSize(
+
+            new Dimension(SettingsManager.getInstance().GAME_WIDTH, SettingsManager.getInstance().GAME_HEIGHT)
+        );
         this.gamePanel.setFocusable(true);
 
         // BACKGROUND PANEL:

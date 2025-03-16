@@ -16,8 +16,8 @@ set(SRC_FILES
         "./src/Direction.java"
         "./src/KeyboardInputs.java"
         "./src/MouseInputs.java"
-        "./src/Level.java"
         "./src/LevelManager.java"
+        "./src/Tile.java"
         "./src/Entity.java"
         "./src/Player.java")
 

@@ -28,7 +28,7 @@ public class GamePanel extends JPanel {
 
         super.paintComponent(graphics);
 
-        this.game.getLevelManager.render(graphics);
+        this.game.getLevelManager().render(graphics);
         this.game.getPlayer().render(graphics);
     }
 }

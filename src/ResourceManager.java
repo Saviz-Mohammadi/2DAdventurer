@@ -35,7 +35,7 @@ public class ResourceManager {
             // TILE IMAGES:
             BufferedImage tile_image_1 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0017.png"));
 
-            this.imageMap.put("tile_0017");
+            this.imageMap.put("tile_0017", tile_image_1);
 
             // PLAYER IMAGES:
             BufferedImage player_image_1 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0090.png"));
@@ -64,7 +64,6 @@ public class ResourceManager {
                 if (instance == null) {
 
                     instance = new ResourceManager();
-
                 }
             }
         }
