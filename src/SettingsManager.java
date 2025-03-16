@@ -13,11 +13,11 @@ public class SettingsManager {
 
     // PROPERTIES:
     // NOTE(SAVIZ): Simply changing the settings here won’t be sufficient, as we also need to adjust the level image to reflect the correct ratios.
-    public final static int TILE_DEFAULT_SIZE = 16;
-    public final static int SCALE = 1;
+    public final static int TILE_DEFAULT_SIZE = 8;
+    public final static int SCALE = 4;
     public final static int TILE_SCALED_SIZE = TILE_DEFAULT_SIZE * SCALE;
-    public final static int COLUMNS = 80;
-    public final static int ROWS = 45;
+    public final static int COLUMNS = 50;
+    public final static int ROWS = 30;
     public final static int GAME_WIDTH = COLUMNS * TILE_SCALED_SIZE;
     public final static int GAME_HEIGHT = ROWS * TILE_SCALED_SIZE;
 
