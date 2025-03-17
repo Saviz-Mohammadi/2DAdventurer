@@ -7,9 +7,6 @@ import java.io.*;
 
 public class Player extends Entity {
 
-    // DEPENDENCIES:
-    Game game = null;
-
     // PROPERTIES:
     private BufferedImage[][] animations;
     private int animationTick = 0;
@@ -23,13 +20,17 @@ public class Player extends Entity {
 
     public void init(Game game, float xCoordinate, float yCoordinate, int movementSpeed) {
 
-        // DEPENDENCIES:
-        this.game = game;
+        super.init(game);
 
         // PROPERTIES:
         super.xCoordinate = xCoordinate;
         super.yCoordinate = yCoordinate;
         super.movementSpeed = movementSpeed;
+
+        super.hitBox.x = super.xCoordinate;
+        super.hitBox.y = super.yCoordinate;
+        super.hitBox.width = SettingsManager.getInstance().TILE_SCALED_SIZE;
+        super.hitBox.height = SettingsManager.getInstance().TILE_SCALED_SIZE;
 
         // ANIMATIONS:
         // NOTE (SAVIZ): We assume that there are only 2 states: 'IDLE' and 'MOVING', each having only 2 images:
@@ -59,19 +60,22 @@ public class Player extends Entity {
         switch(super.direction) {
 
             case EAST:
-                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)super.xCoordinate, (int)super.yCoordinate, 42, 42, null);
+                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)super.hitBox.x, (int)super.hitBox.y, SettingsManager.getInstance().TILE_SCALED_SIZE, SettingsManager.getInstance().TILE_SCALED_SIZE, null);
                 break;
             case WEST:
-                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)super.xCoordinate, (int)super.yCoordinate, -42, 42, null);
+                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)super.hitBox.x + SettingsManager.getInstance().TILE_SCALED_SIZE, (int)super.hitBox.y, -SettingsManager.getInstance().TILE_SCALED_SIZE, SettingsManager.getInstance().TILE_SCALED_SIZE, null);
                 break;
             default:
                 break;
         }
+
+        // NOTE(SAVIZ): This method is used to only visualize the 'hitBox' for debugging. This should not be used in the final release of the game:
+        super.renderHitBox(graphics);
     }
 
     private void updateState() {
 
-        KeyboardInputs keyboardInputs = this.game.getKeyboardInputs();
+        KeyboardInputs keyboardInputs = super.game.getKeyboardInputs();
 
         boolean isMoving = keyboardInputs.isMovingUp || keyboardInputs.isMovingLeft || keyboardInputs.isMovingDown || keyboardInputs.isMovingRight;
 
@@ -88,31 +92,56 @@ public class Player extends Entity {
 
     private void updatePosition() {
 
-        KeyboardInputs keyboardInputs = this.game.getKeyboardInputs();
+        KeyboardInputs keyboardInputs = super.game.getKeyboardInputs();
+
+        float xSpeed = 0;
+        float ySpeed = 0;
 
         // NOTE (SAVIZ): The reason why we do it this way instead of using a switch statement to allow simultaneous horizontal and vertical movement. If we use a switch statement we will only be able to move in one direction at any given time.
         if(keyboardInputs.isMovingLeft && !keyboardInputs.isMovingRight) {
 
             super.direction = Direction.WEST;
-            super.xCoordinate -= super.movementSpeed;
+            xSpeed = -super.movementSpeed;
         }
 
         else if(keyboardInputs.isMovingRight && !keyboardInputs.isMovingLeft) {
 
             super.direction = Direction.EAST;
-            super.xCoordinate += super.movementSpeed;
+            xSpeed = +super.movementSpeed;
         }
 
         if(keyboardInputs.isMovingUp && !keyboardInputs.isMovingDown) {
 
             // We do not change our dircetion here.
-            super.yCoordinate -= super.movementSpeed;
+            ySpeed = -super.movementSpeed;
         }
 
         else if(keyboardInputs.isMovingDown && !keyboardInputs.isMovingUp) {
 
             // We do not change our direction here.
-            super.yCoordinate += super.movementSpeed;
+            ySpeed = +super.movementSpeed;
+        }
+
+        // Check each corner of the hitBox in the future:
+        boolean topLeft = super.willCollide(super.hitBox.x, super.hitBox.y);
+        boolean topRight = super.willCollide(super.hitBox.x + super.hitBox.width, super.hitBox.y);
+        boolean bottomLeft = super.willCollide(super.hitBox.x, super.hitBox.y + super.hitBox.height);
+        boolean bottomRight = super.willCollide(super.hitBox.x + super.hitBox.width, super.hitBox.y + super.hitBox.height);
+
+        // NOTE(SAVIZ): This order is specific, do not change it!
+        if(!topLeft) {
+
+            if(!bottomRight) {
+
+                if(!topRight) {
+
+                    if(!bottomLeft) {
+
+                        super.hitBox.x += xSpeed;
+                        super.hitBox.y += ySpeed;
+                    }
+                }
+            }
         }
     }
 

@@ -29,6 +29,8 @@ public class LevelManager {
         // NOTE(SAVIZ): It is assumed that each image consists of a grid of one-pixel-sized cells, arranged in rows and columns, where each cell contains an RGB value for red, green, or blue, ranging from 0 to 255.
 
         // NOTE(SAVIZ): This part is tricky, so let me explain. We have two nested for-loops that iterate through each coordinate tile color in our image. Based on the color, we determine what type of element is at that position—whether it's a tile, an enemy, or a collectable. Once identified, we need to create these elements and potentially manage their rendering, spawning, and other properties. The most important aspect is their location, which each element will store internally. However, the key challenge is that we cannot simply assign the x and y coordinates directly from our loops, as these values only represent the row and column indices of the elements within the grid. Instead, we must adjust their position accurately by applying an offset equal to their size, ensuring proper alignment. Since all elements should share a uniform size, this offset will be consistent across all of them.
+
+        // TODO(SAVIZ): Currently there is a problem, what if at a certain position x, y there are enemies or something else and tile cannot be created at that point. this creates a problem where we cannot properyl check for collision. The answer is very simple, since we only care about Tiles, we can make a qucik null check in collision and not care at all if there are no tiles there.
         int offest = SettingsManager.getInstance().TILE_SCALED_SIZE;
 
         for (int yCoordinate = 0; yCoordinate < levelImage.getHeight(); yCoordinate++) {
@@ -51,11 +53,17 @@ public class LevelManager {
 
                     switch(green) {
 
-                        case 255:
+                        case 1:
                             tile.xCoordinate = xCoordinate * offest;
                             tile.yCoordinate = yCoordinate * offest;
-                            tile.imageKey = "tile_0017";
-                            tile.isCollidable = true;
+                            tile.imageKey = "tile_0000";
+                            tile.isSolid = false;
+                            break;
+                        case 50:
+                            tile.xCoordinate = xCoordinate * offest;
+                            tile.yCoordinate = yCoordinate * offest;
+                            tile.imageKey = "tile_0034";
+                            tile.isSolid = true;
                             break;
                         default: // If the number is outside of this range, then it is an incorrect value and we will assign some default tile to this coordinate:
                             break;

@@ -63,7 +63,7 @@ public class Game implements Runnable {
 
         // LEVELMANAGER:
         this.levelManager.init(this);
-        this.levelManager.loadLevel(ResourceManager.getInstance().getImageUsingKey("level_1"));
+        this.levelManager.loadLevel(ResourceManager.getInstance().getImageUsingKey("level_0000"));
 
         // PLAYER:
         this.player.init(this, 100, 100, 1);

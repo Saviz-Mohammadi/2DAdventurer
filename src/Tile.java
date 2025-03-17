@@ -8,7 +8,7 @@ public class Tile {
     public int xCoordinate;
     public int yCoordinate;
     public String imageKey;
-    public boolean isCollidable = false;
+    public boolean isSolid = false;
 
     // TODO(SAVIZ): We could have 2 more properties: 1- boolean is teleporter 2- integere number (where does it teleport to (selects next level))
 

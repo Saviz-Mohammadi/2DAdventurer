@@ -28,14 +28,17 @@ public class ResourceManager {
         try {
 
             // LEVEL IMAGES:
-            BufferedImage level_image_1 = ImageIO.read(new File("./resources/image_files/levels/level_0001.png"));
+            BufferedImage level_image_0000 = ImageIO.read(new File("./resources/image_files/levels/complete/level_0000.png"));
 
-            this.imageMap.put("level_1", level_image_1);
+            this.imageMap.put("level_0000", level_image_0000);
 
             // TILE IMAGES:
-            BufferedImage tile_image_1 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0017.png"));
+            BufferedImage tile_image_0000 = ImageIO.read(new File("./resources/image_files/tiles_default/tile_0000.png")); // Air
+            BufferedImage tile_image_0001 = ImageIO.read(new File("./resources/image_files/tiles_default/tile_0034.png")); // Ground
 
-            this.imageMap.put("tile_0017", tile_image_1);
+            this.imageMap.put("tile_0000", tile_image_0000);
+            this.imageMap.put("tile_0034", tile_image_0001);
+
 
             // PLAYER IMAGES:
             BufferedImage player_image_1 = ImageIO.read(new File("./resources/image_files/tiles_transparent/tile_0090.png"));
