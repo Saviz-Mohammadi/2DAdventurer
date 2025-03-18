@@ -12,9 +12,6 @@ public class Player extends Entity {
     private int animationTick = 0;
     private int animationIndex = 0;
     private int animationSpeed = 60;
-    // NOTE(SAVIZ): Draw offsets are used to fine tune the hitBox size in comparison to player size:
-    private float xDrawOffset = 0;
-	private float yDrawOffset = 0;
 
     public Player() {
 
@@ -24,10 +21,6 @@ public class Player extends Entity {
     public void init(Game game, float xCoordinate, float yCoordinate, int width, int height, int movementSpeed) {
 
         super.init(game, xCoordinate, yCoordinate, width, height, movementSpeed);
-
-        // PROPERTIES:
-        this.xDrawOffset = 0; // some number * tile scale;
-        this.yDrawOffset = 0; // some number * tile scale;
 
         // ANIMATIONS:
         // NOTE (SAVIZ): We assume that there are only 2 states: 'IDLE' and 'MOVING', each having only 2 images:

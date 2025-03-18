@@ -91,14 +91,6 @@ public abstract class Entity {
         this.hitBox.height = (float)height;
     }
 
-//     protected void updateHitBox() {
-//
-//         this.hitBox.x = this.xCoordinate;
-//         this.hitBox.y = this.yCoordinate;
-//         this.hitBox.width = SettingsManager.getInstance().TILE_SCALED_SIZE;
-//         this.hitBox.height = SettingsManager.getInstance().TILE_SCALED_SIZE;
-//     }
-
     // NOTE(SAVIZ): This method is used only to visualize the 'hitBox' for debugging. This should not be used in the final release of the game:
     protected void renderHitBox(Graphics graphics) {
 
