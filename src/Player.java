@@ -122,22 +122,13 @@ public class Player extends Entity {
         boolean blWillCollide = super.willCollide(xFutureCoordinate, yFutureCoordinate + super.hitBox.height);
         boolean brWillCollide = super.willCollide(xFutureCoordinate + super.hitBox.width, yFutureCoordinate + super.hitBox.height);
 
-        if(!tlWillCollide) {
+        if(!tlWillCollide && !brWillCollide && !trWillCollide && !blWillCollide) {
 
-            if(!brWillCollide) {
-
-                if(!trWillCollide) {
-
-                    if(!blWillCollide) {
-
-                        // Move player and the hitBox to the new location:
-                        super.xCoordinate += xSpeed;
-                        super.yCoordinate += ySpeed;
-                        super.hitBox.x += xSpeed;
-                        super.hitBox.y += ySpeed;
-                    }
-                }
-            }
+            // Move player and the hitBox to the new location:
+            super.xCoordinate += xSpeed;
+            super.yCoordinate += ySpeed;
+            super.hitBox.x += xSpeed;
+            super.hitBox.y += ySpeed;
         }
     }
 
