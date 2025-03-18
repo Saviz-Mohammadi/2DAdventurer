@@ -12,25 +12,22 @@ public class Player extends Entity {
     private int animationTick = 0;
     private int animationIndex = 0;
     private int animationSpeed = 60;
+    // NOTE(SAVIZ): Draw offsets are used to fine tune the hitBox size in comparison to player size:
+    private float xDrawOffset = 0;
+	private float yDrawOffset = 0;
 
     public Player() {
 
         super();
     }
 
-    public void init(Game game, float xCoordinate, float yCoordinate, int movementSpeed) {
+    public void init(Game game, float xCoordinate, float yCoordinate, int width, int height, int movementSpeed) {
 
-        super.init(game);
+        super.init(game, xCoordinate, yCoordinate, width, height, movementSpeed);
 
         // PROPERTIES:
-        super.xCoordinate = xCoordinate;
-        super.yCoordinate = yCoordinate;
-        super.movementSpeed = movementSpeed;
-
-        super.hitBox.x = super.xCoordinate;
-        super.hitBox.y = super.yCoordinate;
-        super.hitBox.width = SettingsManager.getInstance().TILE_SCALED_SIZE;
-        super.hitBox.height = SettingsManager.getInstance().TILE_SCALED_SIZE;
+        this.xDrawOffset = 0; // some number * tile scale;
+        this.yDrawOffset = 0; // some number * tile scale;
 
         // ANIMATIONS:
         // NOTE (SAVIZ): We assume that there are only 2 states: 'IDLE' and 'MOVING', each having only 2 images:
@@ -60,12 +57,13 @@ public class Player extends Entity {
         switch(super.direction) {
 
             case EAST:
-                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)super.hitBox.x, (int)super.hitBox.y, SettingsManager.getInstance().TILE_SCALED_SIZE, SettingsManager.getInstance().TILE_SCALED_SIZE, null);
+                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)(super.xCoordinate), (int)(super.yCoordinate), super.width, super.height, null);
                 break;
             case WEST:
-                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)super.hitBox.x + SettingsManager.getInstance().TILE_SCALED_SIZE, (int)super.hitBox.y, -SettingsManager.getInstance().TILE_SCALED_SIZE, SettingsManager.getInstance().TILE_SCALED_SIZE, null);
+                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)(super.xCoordinate) + super.width, (int)(super.yCoordinate), -super.width, super.height, null);
                 break;
             default:
+                // We should never encounter this case.
                 break;
         }
 
@@ -122,21 +120,26 @@ public class Player extends Entity {
             ySpeed = +super.movementSpeed;
         }
 
-        // Check each corner of the hitBox in the future:
-        boolean topLeft = super.willCollide(super.hitBox.x, super.hitBox.y);
-        boolean topRight = super.willCollide(super.hitBox.x + super.hitBox.width, super.hitBox.y);
-        boolean bottomLeft = super.willCollide(super.hitBox.x, super.hitBox.y + super.hitBox.height);
-        boolean bottomRight = super.willCollide(super.hitBox.x + super.hitBox.width, super.hitBox.y + super.hitBox.height);
+        // Check each 4 corners of the 'hitBox' in the future position:
+        float xFutureCoordinate = super.hitBox.x + xSpeed;
+        float yFutureCoordinate = super.hitBox.y + ySpeed;
 
-        // NOTE(SAVIZ): This order is specific, do not change it!
-        if(!topLeft) {
+        boolean tlWillCollide = super.willCollide(xFutureCoordinate, yFutureCoordinate);
+        boolean trWillCollide = super.willCollide(xFutureCoordinate + super.hitBox.width, yFutureCoordinate);
+        boolean blWillCollide = super.willCollide(xFutureCoordinate, yFutureCoordinate + super.hitBox.height);
+        boolean brWillCollide = super.willCollide(xFutureCoordinate + super.hitBox.width, yFutureCoordinate + super.hitBox.height);
 
-            if(!bottomRight) {
+        if(!tlWillCollide) {
 
-                if(!topRight) {
+            if(!brWillCollide) {
 
-                    if(!bottomLeft) {
+                if(!trWillCollide) {
 
+                    if(!blWillCollide) {
+
+                        // Move player and the hitBox to the new location:
+                        super.xCoordinate += xSpeed;
+                        super.yCoordinate += ySpeed;
                         super.hitBox.x += xSpeed;
                         super.hitBox.y += ySpeed;
                     }

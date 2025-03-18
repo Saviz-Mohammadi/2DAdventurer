@@ -39,6 +39,7 @@ public class LevelManager {
 
                 int encodedColor = levelImage.getRGB(xCoordinate, yCoordinate);
 
+                // Something that we could do is since we know for a fact that all enemies and collectable swill be placed in a tile that will be of type Air. just create an Air tile in their positions anyway to avoid nell references.
                 // NOTE(SAVIZ): The second parameter 'true' indicates that the pixel may have an alpha component.
                 Color color = new Color(encodedColor, true);
 

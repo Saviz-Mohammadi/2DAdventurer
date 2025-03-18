@@ -67,6 +67,8 @@ public abstract class Entity {
     // PROPERTIES:
     protected float xCoordinate = 0;
     protected float yCoordinate = 0;
+    protected int width = 0;
+    protected int height = 0;
     protected int movementSpeed = 0;
     protected Rectangle2D.Float hitBox = null;
 
@@ -75,20 +77,29 @@ public abstract class Entity {
         this.hitBox = new Rectangle2D.Float();
     }
 
-    protected void init(Game game) {
+    protected void init(Game game, float xCoordinate, float yCoordinate, int width, int height, int movementSpeed) {
 
         this.game = game;
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+        this.width = width;
+        this.height = height;
+        this.movementSpeed = movementSpeed;
+        this.hitBox.x = xCoordinate;
+        this.hitBox.y = yCoordinate;
+        this.hitBox.width = (float)width;
+        this.hitBox.height = (float)height;
     }
 
-    protected void updateHitBox() {
+//     protected void updateHitBox() {
+//
+//         this.hitBox.x = this.xCoordinate;
+//         this.hitBox.y = this.yCoordinate;
+//         this.hitBox.width = SettingsManager.getInstance().TILE_SCALED_SIZE;
+//         this.hitBox.height = SettingsManager.getInstance().TILE_SCALED_SIZE;
+//     }
 
-        this.hitBox.x = this.xCoordinate;
-        this.hitBox.y = this.yCoordinate;
-        this.hitBox.width = SettingsManager.getInstance().TILE_SCALED_SIZE;
-        this.hitBox.height = SettingsManager.getInstance().TILE_SCALED_SIZE;
-    }
-
-    // NOTE(SAVIZ): This method is used to only visualize the 'hitBox' for debugging. This should not be used in the final release of the game:
+    // NOTE(SAVIZ): This method is used only to visualize the 'hitBox' for debugging. This should not be used in the final release of the game:
     protected void renderHitBox(Graphics graphics) {
 
         graphics.setColor(Color.GREEN);
