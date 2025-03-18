@@ -3,3 +3,4 @@
 -- For attacking you can have the player spit out blocks of lasers without doing anything about the animation.
 -- One method of solving the map sizing issue is to make it so big that regardless of device you can see something. Of course the amount that you see would be affected.
 -- Here is another video that tackles the concept of resolutions: https://www.youtube.com/watch?v=lycTkv7mySM
+-- Make sure size is compatbile with laptop.

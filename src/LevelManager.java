@@ -92,6 +92,7 @@ public class LevelManager {
 
     public void update() {
 
+        // I honestly don't know why I have this here...
     }
 
     public void render(Graphics graphics) {

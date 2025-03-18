@@ -9,8 +9,7 @@ import java.awt.event.*;
 public class MouseInputs implements MouseListener, MouseMotionListener {
 
     // PROPERTIES:
-    public int xDelta = 0;
-    public int yDelat = 0;
+    public MouseEvent mouseEvent;
 
     public MouseInputs() {
 
@@ -28,13 +27,12 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
 
-        this.xDelta = mouseEvent.getX();
-        this.yDelat = mouseEvent.getY();
     }
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
 
+        this.mouseEvent = mouseEvent;
     }
 
     @Override

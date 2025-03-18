@@ -8,11 +8,13 @@ include(UseJava)
 set(SRC_FILES
         "./src/Main.java"
         "./src/Game.java"
+        "./src/GameState.java"
         "./src/GameFrame.java"
         "./src/GamePanel.java"
         "./src/ResourceManager.java"
         "./src/SettingsManager.java"
         "./src/Outcome.java"
+        "./src/MainMenu.java"
         "./src/Direction.java"
         "./src/KeyboardInputs.java"
         "./src/MouseInputs.java"

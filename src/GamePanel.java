@@ -28,7 +28,18 @@ public class GamePanel extends JPanel {
 
         super.paintComponent(graphics);
 
-        this.game.getLevelManager().render(graphics);
-        this.game.getPlayer().render(graphics);
+        switch(this.game.getGameState()) {
+
+            case PAUSED:
+                this.game.getMainMenu().render(graphics);
+                break;
+            case PLAYING:
+                this.game.getLevelManager().render(graphics);
+                this.game.getPlayer().render(graphics);
+                break;
+            default:
+                // !!!! WE SHOULD NEVER ENCOUNTER THIS CASE !!!!.
+                break;
+        }
     }
 }

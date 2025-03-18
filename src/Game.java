@@ -10,6 +10,7 @@ import java.awt.*;
 public class Game implements Runnable {
 
     // PROPERTIES:
+    private GameState gameState = GameState.PAUSED;
     private final int FPS = 120;
     private final int UPS = 200;
     private boolean operatingSystemIsUnix = false;
@@ -18,6 +19,7 @@ public class Game implements Runnable {
     private Thread gameThread = null;
     private KeyboardInputs keyboardInputs = null;
     private MouseInputs mouseInpus = null;
+    private MainMenu mainMenu = null;
     private LevelManager levelManager = null;
     private Player player = null;
     private GamePanel gamePanel = null;
@@ -38,8 +40,11 @@ public class Game implements Runnable {
         this.keyboardInputs = new KeyboardInputs();
         this.mouseInpus = new MouseInputs();
 
+        // MAINMENU:
+        this.mainMenu = new MainMenu();
+
         // LEVELMANAGER:
-        levelManager = new LevelManager();
+        this.levelManager = new LevelManager();
 
         // PLAYER:
         this.player = new Player();
@@ -60,6 +65,9 @@ public class Game implements Runnable {
         this.gamePanel.addKeyListener(this.keyboardInputs);
         this.gamePanel.addMouseListener(this.mouseInpus);
         this.gamePanel.addMouseMotionListener(this.mouseInpus);
+
+        // MAINMENU:
+        this.mainMenu.init(this);
 
         // LEVELMANAGER:
         this.levelManager.init(this);
@@ -160,6 +168,11 @@ public class Game implements Runnable {
     }
 
     // GETTERS
+    public GameState getGameState() {
+
+        return(this.gameState);
+    }
+
     public KeyboardInputs getKeyboardInputs() {
 
         return(this.keyboardInputs);
@@ -168,6 +181,11 @@ public class Game implements Runnable {
     public MouseInputs getMouseInputs() {
 
         return(this.mouseInpus);
+    }
+
+    public MainMenu getMainMenu() {
+
+        return(this.mainMenu);
     }
 
     public LevelManager getLevelManager() {
@@ -183,6 +201,18 @@ public class Game implements Runnable {
     // PRIVATE
     private void update() {
 
-        this.player.update();
+        switch(this.gameState) {
+
+            case PAUSED:
+                this.mainMenu.update();
+                break;
+            case PLAYING:
+                this.levelManager.update();
+                this.player.update();
+                break;
+            default:
+                // !!!! WE SHOULD NEVER ENCOUNTER THIS CASE !!!!.
+                break;
+        }
     }
 }
