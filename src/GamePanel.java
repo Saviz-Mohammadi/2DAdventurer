@@ -30,7 +30,7 @@ public class GamePanel extends JPanel {
 
         switch(this.game.getGameState()) {
 
-            case PAUSED:
+            case MAINMENU:
                 this.game.getMainMenu().render(graphics);
                 break;
             case PLAYING:

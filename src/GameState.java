@@ -6,7 +6,7 @@
  */
 public enum GameState {
 
-    PAUSED, PLAYING;
+    MAINMENU, OPTIONSMENU, PLAYING, QUIT;
 
     @Override
     public String toString() {
@@ -15,11 +15,17 @@ public enum GameState {
 
         switch (this) {
 
-            case PAUSED:
-                result = "PAUSED";
+            case MAINMENU:
+                result = "MAINMENU";
+                break;
+            case OPTIONSMENU:
+                result = "OPTIONSMENU";
                 break;
             case PLAYING:
                 result = "PLAYING";
+                break;
+            case QUIT:
+                result = "QUIT";
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected state: " + this);

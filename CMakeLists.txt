@@ -15,6 +15,7 @@ set(SRC_FILES
         "./src/SettingsManager.java"
         "./src/Outcome.java"
         "./src/MainMenu.java"
+        "./src/MenuButton.java"
         "./src/Direction.java"
         "./src/KeyboardInputs.java"
         "./src/MouseInputs.java"

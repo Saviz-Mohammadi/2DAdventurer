@@ -10,7 +10,7 @@ import java.awt.*;
 public class Game implements Runnable {
 
     // PROPERTIES:
-    private GameState gameState = GameState.PAUSED;
+    private GameState gameState = GameState.MAINMENU;
     private final int FPS = 120;
     private final int UPS = 200;
     private boolean operatingSystemIsUnix = false;
@@ -67,7 +67,7 @@ public class Game implements Runnable {
         this.gamePanel.addMouseMotionListener(this.mouseInpus);
 
         // MAINMENU:
-        this.mainMenu.init(this);
+        this.mainMenu.init(this, (SettingsManager.getInstance().GAME_WIDTH - 350) / 2, (SettingsManager.getInstance().GAME_HEIGHT - 350) / 2, 350, 350, "ui_background_main_menu");
 
         // LEVELMANAGER:
         this.levelManager.init(this);
@@ -167,7 +167,7 @@ public class Game implements Runnable {
         }
     }
 
-    // GETTERS
+    // GETTERS:
     public GameState getGameState() {
 
         return(this.gameState);
@@ -198,17 +198,32 @@ public class Game implements Runnable {
         return(this.player);
     }
 
+    // SETTERS:
+    public void setGameState(GameState newGameState) {
+
+        if(this.gameState == newGameState) {
+
+            return;
+        }
+
+        this.gameState = newGameState;
+    }
+
     // PRIVATE
     private void update() {
 
         switch(this.gameState) {
 
-            case PAUSED:
+            case MAINMENU:
                 this.mainMenu.update();
                 break;
             case PLAYING:
                 this.levelManager.update();
                 this.player.update();
+                break;
+            case OPTIONSMENU:
+            case QUIT:
+                System.exit(0);
                 break;
             default:
                 // !!!! WE SHOULD NEVER ENCOUNTER THIS CASE !!!!.

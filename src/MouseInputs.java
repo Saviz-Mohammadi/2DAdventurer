@@ -9,13 +9,10 @@ import java.awt.event.*;
 public class MouseInputs implements MouseListener, MouseMotionListener {
 
     // PROPERTIES:
-    public MouseEvent mouseEvent;
+    public int xCoordinate = 0;
+    public int yCoordinate = 0;
 
     public MouseInputs() {
-
-    }
-
-    public MouseInputs(GamePanel gamePanel) {
 
     }
 
@@ -32,7 +29,8 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
 
-        this.mouseEvent = mouseEvent;
+        this.xCoordinate = mouseEvent.getX();
+        this.yCoordinate = mouseEvent.getY();
     }
 
     @Override
