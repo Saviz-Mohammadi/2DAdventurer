@@ -18,7 +18,7 @@ public class MainMenu {
 
     public MainMenu() {
 
-        this.menuButtons = new MenuButton[3];
+        this.menuButtons = new MenuButton[2];
     }
 
     public void init(Game game, int xCoordinate, int yCoordinate, int width, int height, String imageKey) {
@@ -33,18 +33,14 @@ public class MainMenu {
         this.height = height;
         this.imageKey = imageKey;
 
-        MenuButton playMenuButton = new MenuButton();
-        playMenuButton.init(this.game, xCoordinate + 115, yCoordinate + 108, 120, 45, "ui_button_play");
-
         MenuButton optionsMenuButton = new MenuButton();
-        optionsMenuButton.init(this.game, xCoordinate + 115, yCoordinate + 153, 120, 45, "ui_button_options");
+        optionsMenuButton.init(this.game, xCoordinate + 115, yCoordinate + 108, 120, 45, "ui_button_options");
 
         MenuButton quitMenuButton = new MenuButton();
-        quitMenuButton.init(this.game, xCoordinate + 115, yCoordinate + 198, 120, 45, "ui_button_quit");
+        quitMenuButton.init(this.game, xCoordinate + 115, yCoordinate + 153, 120, 45, "ui_button_quit");
 
-        this.menuButtons[0] = playMenuButton;
-        this.menuButtons[1] = optionsMenuButton;
-        this.menuButtons[2] = quitMenuButton;
+        this.menuButtons[0] = optionsMenuButton;
+        this.menuButtons[1] = quitMenuButton;
     }
 
     public void update() {
@@ -54,20 +50,14 @@ public class MainMenu {
             menuButton.update();
         }
 
-        // PLAY BUTTON:
-        if(menuButtons[0].isClicked) {
-
-            this.game.setGameState(GameState.PLAYING);
-        }
-
         // OPTIONS BUTTON:
-        if(menuButtons[1].isClicked) {
+        if(menuButtons[0].isClicked) {
 
             this.game.setGameState(GameState.OPTIONSMENU);
         }
 
         // QUIT BUTTON:
-        if(menuButtons[2].isClicked) {
+        if(menuButtons[1].isClicked) {
 
             this.game.setGameState(GameState.QUIT);
         }

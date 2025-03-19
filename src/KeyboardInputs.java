@@ -9,6 +9,7 @@ import java.awt.event.*;
 public class KeyboardInputs implements KeyListener {
 
     // PROPERTIES:
+    public boolean isEscaping = false;
     public boolean isMovingUp = false;
     public boolean isMovingLeft = false;
     public boolean isMovingDown = false;
@@ -45,6 +46,19 @@ public class KeyboardInputs implements KeyListener {
             case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
                 this.isMovingRight = true;
+                break;
+            default:
+                break;
+        }
+
+        switch(keyCode) {
+
+            case KeyEvent.VK_ESCAPE:
+                // Only toggle if not already pressed
+                if (!this.isEscaping) {
+
+                    this.isEscaping = true;
+                }
                 break;
             default:
                 break;

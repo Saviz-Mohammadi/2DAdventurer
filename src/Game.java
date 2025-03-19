@@ -229,5 +229,24 @@ public class Game implements Runnable {
                 // !!!! WE SHOULD NEVER ENCOUNTER THIS CASE !!!!.
                 break;
         }
+
+        if(this.keyboardInputs.isEscaping) {
+
+            switch(this.gameState) {
+
+                case MAINMENU:
+                case OPTIONSMENU:
+                    this.setGameState(GameState.PLAYING);
+                    break;
+                case PLAYING:
+                    this.setGameState(GameState.MAINMENU);
+                    break;
+                default:
+                    // !!!! WE SHOULD NEVER ENCOUNTER THIS CASE !!!!.
+                    break;
+            }
+
+            this.keyboardInputs.isEscaping = false;
+        }
     }
 }
