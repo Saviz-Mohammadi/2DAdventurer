@@ -11,7 +11,7 @@ import java.io.*;
  */
 public class SettingsManager {
 
-    // PROPERTIES:
+    // CONSTANTS:
     // NOTE(SAVIZ): Simply changing the settings here won’t be sufficient, as we also need to adjust the level image to reflect the correct ratios.
     public final static int TILE_DEFAULT_SIZE = 8;
     public final static int SCALE = 4;
@@ -20,6 +20,10 @@ public class SettingsManager {
     public final static int ROWS = 30;
     public final static int GAME_WIDTH = COLUMNS * TILE_SCALED_SIZE;
     public final static int GAME_HEIGHT = ROWS * TILE_SCALED_SIZE;
+
+    // PROPERTIES:
+    private int musicVolume = 50;
+    private int sfxVolume = 50;
 
     // NOTE (SAVIZ): Volatile ensures thread safety:
     private static volatile SettingsManager instance;
@@ -46,6 +50,86 @@ public class SettingsManager {
         }
 
         return (instance);
+    }
+
+    public void increaseMusicVolume(int amount) {
+
+        this.setMusicVolume(this.musicVolume + amount);
+    }
+
+    public void increaseSFXVolume(int amount) {
+
+        this.setSFXVolume(this.sfxVolume + amount);
+    }
+
+    public void decreaseMusicVolume(int amount) {
+
+        this.setMusicVolume(this.musicVolume - amount);
+    }
+
+    public void decreaseSFXVolume(int amount) {
+
+        this.setSFXVolume(this.sfxVolume - amount);
+    }
+
+    // GETTERS:
+    public int getMusicVolume() {
+
+        return(this.musicVolume);
+    }
+
+    public int getSFXVolume() {
+
+        return(this.sfxVolume);
+    }
+
+    // SETTERS:
+    public void setMusicVolume(int newVolume) {
+
+        if(this.musicVolume == newVolume) {
+
+            return;
+        }
+
+        if(newVolume < 0) {
+
+            this.musicVolume = 0;
+
+            return;
+        }
+
+        if(newVolume > 100) {
+
+            this.musicVolume = 100;
+
+            return;
+        }
+
+        this.musicVolume = newVolume;
+    }
+
+    public void setSFXVolume(int newVolume) {
+
+        if(this.sfxVolume == newVolume) {
+
+            return;
+        }
+
+        if(newVolume < 0) {
+
+            this.sfxVolume = 0;
+
+            return;
+        }
+
+        if(newVolume > 100) {
+
+            this.sfxVolume = 100;
+
+            return;
+        }
+
+        this.sfxVolume = newVolume;
     }
 
     // TODO(SAVIZ): I need to create observer pattern with these:

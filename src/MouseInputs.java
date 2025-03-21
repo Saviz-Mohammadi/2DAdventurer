@@ -11,6 +11,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     // PROPERTIES:
     public int xCoordinate = 0;
     public int yCoordinate = 0;
+    public boolean isPressed = false;
 
     public MouseInputs() {
 
@@ -29,18 +30,23 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
 
-        this.xCoordinate = mouseEvent.getX();
-        this.yCoordinate = mouseEvent.getY();
+
     }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
 
+        this.xCoordinate = mouseEvent.getX();
+        this.yCoordinate = mouseEvent.getY();
+        isPressed = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
 
+        this.xCoordinate = mouseEvent.getX();
+        this.yCoordinate = mouseEvent.getY();
+        isPressed = false;
     }
 
     @Override

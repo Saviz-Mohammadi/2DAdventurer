@@ -36,8 +36,10 @@ public class ResourceManager {
             BufferedImage ui_image_0005 = ImageIO.read(new File("./resources/image_files/ui/buttons/main_menu.png"));
             BufferedImage ui_image_0006 = ImageIO.read(new File("./resources/image_files/ui/buttons/options.png"));
             BufferedImage ui_image_0007 = ImageIO.read(new File("./resources/image_files/ui/buttons/quit.png"));
-            BufferedImage ui_image_0008 = ImageIO.read(new File("./resources/image_files/ui/backgrounds/main_menu.png"));
-            BufferedImage ui_image_0009 = ImageIO.read(new File("./resources/image_files/ui/backgrounds/options_menu.png"));
+            BufferedImage ui_image_0008 = ImageIO.read(new File("./resources/image_files/ui/buttons/increase.png"));
+            BufferedImage ui_image_0009 = ImageIO.read(new File("./resources/image_files/ui/buttons/decrease.png"));
+            BufferedImage ui_image_0010 = ImageIO.read(new File("./resources/image_files/ui/backgrounds/main_menu.png"));
+            BufferedImage ui_image_0011 = ImageIO.read(new File("./resources/image_files/ui/backgrounds/options_menu.png"));
 
             this.imageMap.put("ui_button_apply", ui_image_0000);
             this.imageMap.put("ui_button_cancel", ui_image_0001);
@@ -47,8 +49,10 @@ public class ResourceManager {
             this.imageMap.put("ui_button_main_menu", ui_image_0005);
             this.imageMap.put("ui_button_options", ui_image_0006);
             this.imageMap.put("ui_button_quit", ui_image_0007);
-            this.imageMap.put("ui_background_main_menu", ui_image_0008);
-            this.imageMap.put("ui_background_options_menu", ui_image_0009);
+            this.imageMap.put("ui_button_increase", ui_image_0008);
+            this.imageMap.put("ui_button_decrease", ui_image_0009);
+            this.imageMap.put("ui_background_main_menu", ui_image_0010);
+            this.imageMap.put("ui_background_options_menu", ui_image_0011);
 
             // LEVEL IMAGES:
             BufferedImage level_image_0000 = ImageIO.read(new File("./resources/image_files/levels/complete/level_0000.png"));

@@ -19,6 +19,7 @@ public class MenuButton {
     private int height = 0;
     private String imageKey = "";
     private Rectangle bounds = null;
+    private boolean wasPressed = false;
 
     public MenuButton() {
 
@@ -42,9 +43,21 @@ public class MenuButton {
     public void update() {
 
         // NOTE(SAVIZ): Typically, an event system would handle this. However, since we're required to develop the game using a GUI framework like Swing, the circumstances are unusual. Given these constraints, this approach seems to be the best way to replicate that behavior:
-        this.isClicked = false;
+        boolean currentlyInside = this.bounds.contains(this.game.getMouseInputs().xCoordinate, this.game.getMouseInputs().yCoordinate);
+        boolean currentlyPressed = this.game.getMouseInputs().isPressed;
 
-        this.isClicked = this.bounds.contains(this.game.getMouseInputs().xCoordinate, this.game.getMouseInputs().yCoordinate);
+        // Detect the edge: when the mouse was pressed and now released inside the button:
+        if (this.wasPressed && !currentlyPressed && currentlyInside) {
+
+            this.isClicked = true;
+        }
+
+        else {
+
+            this.isClicked = false;
+        }
+
+        this.wasPressed = currentlyPressed;
     }
 
     public void render(Graphics graphics) {

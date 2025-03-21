@@ -20,6 +20,7 @@ public class Game implements Runnable {
     private KeyboardInputs keyboardInputs = null;
     private MouseInputs mouseInpus = null;
     private MainMenu mainMenu = null;
+    private OptionsMenu optionsMenu = null;
     private LevelManager levelManager = null;
     private Player player = null;
     private GamePanel gamePanel = null;
@@ -42,6 +43,9 @@ public class Game implements Runnable {
 
         // MAINMENU:
         this.mainMenu = new MainMenu();
+
+        // OPTIONSMENU:
+        this.optionsMenu = new OptionsMenu();
 
         // LEVELMANAGER:
         this.levelManager = new LevelManager();
@@ -68,6 +72,9 @@ public class Game implements Runnable {
 
         // MAINMENU:
         this.mainMenu.init(this, (SettingsManager.getInstance().GAME_WIDTH - 350) / 2, (SettingsManager.getInstance().GAME_HEIGHT - 350) / 2, 350, 350, "ui_background_main_menu");
+
+        // OPTIONSMENU:
+        this.optionsMenu.init(this, (SettingsManager.getInstance().GAME_WIDTH - 350) / 2, (SettingsManager.getInstance().GAME_HEIGHT - 350) / 2, 350, 350, "ui_background_options_menu");
 
         // LEVELMANAGER:
         this.levelManager.init(this);
@@ -188,6 +195,11 @@ public class Game implements Runnable {
         return(this.mainMenu);
     }
 
+    public OptionsMenu getOptionsMenu() {
+
+        return(this.optionsMenu);
+    }
+
     public LevelManager getLevelManager() {
 
         return(this.levelManager);
@@ -222,6 +234,8 @@ public class Game implements Runnable {
                 this.player.update();
                 break;
             case OPTIONSMENU:
+                this.optionsMenu.update();
+                break;
             case QUIT:
                 System.exit(0);
                 break;

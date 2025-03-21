@@ -6,3 +6,4 @@
 -- Make sure size is compatbile with laptop.
 -- Rename the play button to resume.
 -- Honestly... just remove the play/resume button and just have it be toggled on and off using escape.
+-- For the UI to change buttons on hover you can change a boolean based on the entered and exited mouse events.

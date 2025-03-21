@@ -33,6 +33,9 @@ public class GamePanel extends JPanel {
             case MAINMENU:
                 this.game.getMainMenu().render(graphics);
                 break;
+            case OPTIONSMENU:
+                this.game.getOptionsMenu().render(graphics);
+                break;
             case PLAYING:
                 this.game.getLevelManager().render(graphics);
                 this.game.getPlayer().render(graphics);

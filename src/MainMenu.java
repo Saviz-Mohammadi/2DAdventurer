@@ -65,7 +65,7 @@ public class MainMenu {
 
     public void render(Graphics graphics) {
 
-        graphics.drawImage(ResourceManager.getInstance().getImageUsingKey("ui_background_main_menu"), this.xCoordinate, this.yCoordinate, this.width, this.height, null);
+        graphics.drawImage(ResourceManager.getInstance().getImageUsingKey(this.imageKey), this.xCoordinate, this.yCoordinate, this.width, this.height, null);
 
         for (MenuButton menuButton : this.menuButtons) {
 
