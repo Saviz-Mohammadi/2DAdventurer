@@ -68,7 +68,7 @@ public class Player extends Entity {
 
         KeyboardInputs keyboardInputs = super.game.getKeyboardInputs();
 
-        boolean isMoving = keyboardInputs.isMovingUp || keyboardInputs.isMovingLeft || keyboardInputs.isMovingDown || keyboardInputs.isMovingRight;
+        boolean isMoving = keyboardInputs.isJumping || super.isInAir || keyboardInputs.isMovingLeft || keyboardInputs.isMovingRight;
 
         if(isMoving) {
 
@@ -85,50 +85,104 @@ public class Player extends Entity {
 
         KeyboardInputs keyboardInputs = super.game.getKeyboardInputs();
 
-        float xSpeed = 0;
-        float ySpeed = 0;
+        if(super.state != Entity.State.MOVING) {
+
+            return;
+        }
+
+        if (keyboardInputs.isJumping) {
+
+            this.jump();
+        }
+
+        if (!super.isInAir) {
+
+            if (!super.isGrounded()) {
+
+                super.isInAir = true;
+            }
+        }
+
+        super.xSpeed = 0.0f;
 
         // NOTE (SAVIZ): The reason why we do it this way instead of using a switch statement to allow simultaneous horizontal and vertical movement. If we use a switch statement we will only be able to move in one direction at any given time.
-        if(keyboardInputs.isMovingLeft && !keyboardInputs.isMovingRight) {
+        if(keyboardInputs.isMovingLeft) {
 
             super.direction = Direction.WEST;
-            xSpeed = -super.movementSpeed;
+            super.xSpeed -= super.movementSpeed;
         }
 
-        else if(keyboardInputs.isMovingRight && !keyboardInputs.isMovingLeft) {
+        if(keyboardInputs.isMovingRight) {
 
             super.direction = Direction.EAST;
-            xSpeed = +super.movementSpeed;
+            super.xSpeed += super.movementSpeed;
         }
 
-        if(keyboardInputs.isMovingUp && !keyboardInputs.isMovingDown) {
+        // Check for both and x and y movement:
+        if(super.isInAir) {
 
-            // We do not change our dircetion here.
-            ySpeed = -super.movementSpeed;
+            if (super.canMoveToCoordinates(super.hitBox.x, super.hitBox.y + super.ySpeed)) {
+
+                super.yCoordinate += super.ySpeed;
+                super.hitBox.y += super.ySpeed;
+                super.ySpeed += super.gravity;
+                this.updateXPosition();
+            }
+
+            else {
+
+                float newYPosition = obtainYPosition(super.ySpeed);
+
+                super.yCoordinate = newYPosition;
+                super.hitBox.y = newYPosition;
+
+                if(super.ySpeed > 0.0f) {
+
+                    super.isInAir = false;
+                    super.ySpeed = 0.0f;
+                }
+
+                else {
+
+                    super.ySpeed = super.fallSpeedAfterCollision;
+                }
+
+                this.updateXPosition();
+            }
         }
 
-        else if(keyboardInputs.isMovingDown && !keyboardInputs.isMovingUp) {
+        // Check for x movement:
+        else {
 
-            // We do not change our direction here.
-            ySpeed = +super.movementSpeed;
+            this.updateXPosition();
+        }
+    }
+
+    private void jump() {
+
+        if (super.isInAir) {
+
+            return;
         }
 
-        // Check each 4 corners of the 'hitBox' in the future position:
-        float xFutureCoordinate = super.hitBox.x + xSpeed;
-        float yFutureCoordinate = super.hitBox.y + ySpeed;
+        super.isInAir = true;
+        super.ySpeed = super.jumpSpeed;
+    }
 
-        boolean tlWillCollide = super.willCollide(xFutureCoordinate, yFutureCoordinate);
-        boolean trWillCollide = super.willCollide(xFutureCoordinate + super.hitBox.width, yFutureCoordinate);
-        boolean blWillCollide = super.willCollide(xFutureCoordinate, yFutureCoordinate + super.hitBox.height);
-        boolean brWillCollide = super.willCollide(xFutureCoordinate + super.hitBox.width, yFutureCoordinate + super.hitBox.height);
+    private void updateXPosition() {
 
-        if(!tlWillCollide && !brWillCollide && !trWillCollide && !blWillCollide) {
+        if (super.canMoveToCoordinates(this.hitBox.x + super.xSpeed, this.hitBox.y)) {
 
-            // Move player and the hitBox to the new location:
-            super.xCoordinate += xSpeed;
-            super.yCoordinate += ySpeed;
-            super.hitBox.x += xSpeed;
-            super.hitBox.y += ySpeed;
+            super.xCoordinate += super.xSpeed;
+            super.hitBox.x += super.xSpeed;
+        }
+
+        else {
+
+            float newXPosition = obtainXPosition(super.xSpeed);
+
+            super.xCoordinate = newXPosition;
+            super.hitBox.x = newXPosition;
         }
     }
 

@@ -81,7 +81,7 @@ public class Game implements Runnable {
         this.levelManager.loadLevel(ResourceManager.getInstance().getImageUsingKey("level_0000"));
 
         // PLAYER:
-        this.player.init(this, 100, 100, SettingsManager.getInstance().TILE_SCALED_SIZE, SettingsManager.getInstance().TILE_SCALED_SIZE,1);
+        this.player.init(this, 100, 100, SettingsManager.getInstance().TILE_SCALED_SIZE, SettingsManager.getInstance().TILE_SCALED_SIZE, 1);
 
         // GAME PANEL:
         this.gamePanel.init(this);
