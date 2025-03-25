@@ -103,12 +103,12 @@ public abstract class Entity {
         boolean willCollide = false;
 
         // If the movement causes the player to go outside the boundaries of the window or panel:
-        if (xFutureCoordinate < 0 || xFutureCoordinate >= this.game.getLevelManager().levelWidth) {
+        if (xFutureCoordinate < 0 || xFutureCoordinate >= (this.game.getLevelManager().levelWidth * SettingsManager.getInstance().TILE_SCALED_SIZE)) {
 
             willCollide = true;
         }
 
-        if (yFutureCoordinate < 0 || yFutureCoordinate >= this.game.getLevelManager().levelHeight) {
+        if (yFutureCoordinate < 0 || yFutureCoordinate >= (this.game.getLevelManager().levelHeight * SettingsManager.getInstance().TILE_SCALED_SIZE)) {
 
             willCollide = true;
         }
@@ -116,6 +116,20 @@ public abstract class Entity {
         // Check 'Tile':
         float xIndex = xFutureCoordinate / SettingsManager.getInstance().TILE_SCALED_SIZE;
         float yIndex = yFutureCoordinate / SettingsManager.getInstance().TILE_SCALED_SIZE;
+
+        if ((int)xIndex >= this.game.getLevelManager().levelWidth) {
+
+            willCollide = true;
+
+            return(willCollide);
+        }
+
+        if ((int)yIndex >= this.game.getLevelManager().levelHeight) {
+
+            willCollide = true;
+
+            return(willCollide);
+        }
 
         Tile[][] tiles = this.game.getLevelManager().getTiles();
         Tile tile = tiles[(int) xIndex][(int) yIndex];
@@ -131,6 +145,17 @@ public abstract class Entity {
         }
 
         return(willCollide);
+    }
+
+    // GETTERS:
+    public float getXCoordinate() {
+
+        return(this.xCoordinate);
+    }
+
+    public float getYCoordinate() {
+
+        return(this.yCoordinate);
     }
 
     public Rectangle2D getHitBox() {

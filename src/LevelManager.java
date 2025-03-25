@@ -7,8 +7,8 @@ import java.io.*;
 public class LevelManager {
 
     // CONSTANTS:
-    private final static int TOPBORDER = (int)(0.2 * SettingsManager.getInstance().GAME_HEIGHT);
-    private final static int BOTTOMBORDER = (int)(0.8 * SettingsManager.getInstance().GAME_HEIGHT);
+    private final static int TOPBORDER = (int)(0.8 * SettingsManager.getInstance().GAME_HEIGHT);
+    private final static int BOTTOMBORDER = (int)(0.2 * SettingsManager.getInstance().GAME_HEIGHT);
     private final static int LEFTBORDER = (int)(0.2 * SettingsManager.getInstance().GAME_WIDTH);
     private final static int RIGHTBORDER = (int)(0.8 * SettingsManager.getInstance().GAME_WIDTH);
 
@@ -16,8 +16,6 @@ public class LevelManager {
     private Game game = null;
 
     // PROPERTIES:
-    public int width = 0;
-    public int height = 0;
     public int levelWidth = 0;
     public int levelHeight = 0;
     public int xLevelOffset = 0;
@@ -39,14 +37,12 @@ public class LevelManager {
 
     public void loadLevel(BufferedImage levelImage) {
 
-        this.width = levelImage.getWidth();
-        this.height = levelImage.getHeight();
-        this.levelWidth = levelImage.getWidth() * SettingsManager.getInstance().TILE_SCALED_SIZE;
-        this.levelHeight = levelImage.getHeight() * SettingsManager.getInstance().TILE_SCALED_SIZE;
+        this.levelWidth = levelImage.getWidth();
+        this.levelHeight = levelImage.getHeight();
         this.xMaxOffset = (this.levelWidth - SettingsManager.getInstance().COLUMNS) * SettingsManager.getInstance().TILE_SCALED_SIZE;
         this.yMaxOffset = (this.levelHeight - SettingsManager.getInstance().ROWS) * SettingsManager.getInstance().TILE_SCALED_SIZE;
 
-        this.tiles = new Tile[this.width][this.height];
+        this.tiles = new Tile[this.levelWidth][this.levelHeight];
 
         // NOTE(SAVIZ): It is assumed that each image consists of a grid of one-pixel-sized cells, arranged in rows and columns, where each cell contains an RGB value for red, green, or blue, ranging from 0 to 255.
 
@@ -114,13 +110,10 @@ public class LevelManager {
 
     public void update() {
 
-        int playerX = (int) this.game.getPlayer().getHitBox().getX();
+        // X:
+        int playerX = (int) this.game.getPlayer().getXCoordinate();
         int diffX = playerX - this.xLevelOffset;
 
-        int playerY = (int) this.game.getPlayer().getHitBox().getY();
-        int diffY = playerY - this.yLevelOffset;
-
-        // X:
         if(diffX > this.RIGHTBORDER) {
 
             this.xLevelOffset += diffX - this.RIGHTBORDER;
@@ -141,8 +134,10 @@ public class LevelManager {
             this.xLevelOffset = 0;
         }
 
-
         // Y:
+        int playerY = (int) this.game.getPlayer().getYCoordinate();
+        int diffY = playerY - this.yLevelOffset;
+
         if(diffY > this.TOPBORDER) {
 
             this.yLevelOffset += diffY - this.TOPBORDER;
@@ -168,9 +163,9 @@ public class LevelManager {
 
         int scale = SettingsManager.getInstance().TILE_SCALED_SIZE;
 
-        for (int yCoordinate = 0; yCoordinate < this.height; yCoordinate++) {
+        for (int yCoordinate = 0; yCoordinate < this.levelHeight; yCoordinate++) {
 
-            for (int xCoordinate = 0; xCoordinate < this.width; xCoordinate++) {
+            for (int xCoordinate = 0; xCoordinate < this.levelWidth; xCoordinate++) {
 
                 Tile tile = tiles[xCoordinate][yCoordinate];
 

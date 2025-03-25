@@ -55,7 +55,7 @@ public class ResourceManager {
             this.imageMap.put("ui_background_options_menu", ui_image_0011);
 
             // LEVEL IMAGES:
-            BufferedImage level_image_0000 = ImageIO.read(new File("./resources/image_files/levels/complete/level_0000.png"));
+            BufferedImage level_image_0000 = ImageIO.read(new File("./resources/image_files/levels/complete/level_0001.png"));
 
             this.imageMap.put("level_0000", level_image_0000);
 
