@@ -65,18 +65,12 @@ public abstract class Entity {
     Game game = null;
 
     // PROPERTIES:
-    protected float xCoordinate = 0.0f;
-    protected float yCoordinate = 0.0f;
+    protected float xCoordinate = 0;
+    protected float yCoordinate = 0;
     protected int width = 0;
     protected int height = 0;
     protected int movementSpeed = 0;
     protected Rectangle2D.Float hitBox = null;
-    protected float xSpeed = 0.0f;
-    protected float ySpeed = 0.0f;
-    protected float gravity = 0.04f;
-    protected float jumpSpeed = -2.25f;
-    protected float fallSpeedAfterCollision = 0.5f;
-    protected boolean isInAir = false;
 
     protected Entity() {
 
@@ -95,11 +89,6 @@ public abstract class Entity {
         this.hitBox.y = yCoordinate;
         this.hitBox.width = (float)width;
         this.hitBox.height = (float)height;
-
-        if (!this.isGrounded()) {
-
-            this.isInAir = true;
-        }
     }
 
     // NOTE(SAVIZ): This method is used only to visualize the 'hitBox' for debugging. This should not be used in the final release of the game:
@@ -109,41 +98,17 @@ public abstract class Entity {
         graphics.drawRect((int)this.hitBox.x, (int)this.hitBox.y, (int)this.hitBox.width, (int)this.hitBox.height);
     }
 
-    protected boolean canMoveToCoordinates(float xCoordinate, float yCoordinate) {
-
-        boolean tlWillCollide = this.willCollide(xCoordinate, yCoordinate);
-        boolean trWillCollide = this.willCollide(xCoordinate + this.hitBox.width, yCoordinate);
-        boolean blWillCollide = this.willCollide(xCoordinate, yCoordinate + this.hitBox.height);
-        boolean brWillCollide = this.willCollide(xCoordinate + this.hitBox.width, yCoordinate + this.hitBox.height);
-
-        if(!tlWillCollide) {
-
-            if(!brWillCollide) {
-
-                if(!trWillCollide) {
-
-                    if(!blWillCollide) {
-
-                        return(true);
-                    }
-                }
-            }
-        }
-
-        return(false);
-    }
-
     protected boolean willCollide(float xFutureCoordinate, float yFutureCoordinate) {
 
         boolean willCollide = false;
 
         // If the movement causes the player to go outside the boundaries of the window or panel:
-        if (xFutureCoordinate < 0 || xFutureCoordinate >= SettingsManager.getInstance().GAME_WIDTH) {
+        if (xFutureCoordinate < 0 || xFutureCoordinate >= this.game.getLevelManager().levelWidth) {
 
             willCollide = true;
         }
 
-        if (yFutureCoordinate < 0 || yFutureCoordinate >= SettingsManager.getInstance().GAME_HEIGHT) {
+        if (yFutureCoordinate < 0 || yFutureCoordinate >= this.game.getLevelManager().levelHeight) {
 
             willCollide = true;
         }
@@ -168,51 +133,8 @@ public abstract class Entity {
         return(willCollide);
     }
 
-    protected boolean isGrounded() {
+    public Rectangle2D getHitBox() {
 
-        // Check the pixel below bottomleft and bottomright:
-        if (!willCollide(this.hitBox.x, this.hitBox.y + this.hitBox.height + 1)) {
-
-            if (!willCollide(this.hitBox.x + this.hitBox.width, this.hitBox.y + this.hitBox.height + 1)) {
-
-                return(false);
-            }
-        }
-
-        return(true);
-    }
-
-    protected float obtainXPosition(float xSpeed) {
-
-        int currentTile = (int) (this.hitBox.x / SettingsManager.getInstance().TILE_SCALED_SIZE);
-
-        // Right:
-        if (xSpeed > 0.0f) {
-
-            return (currentTile * SettingsManager.getInstance().TILE_SCALED_SIZE) + (int) (SettingsManager.getInstance().TILE_SCALED_SIZE - this.hitBox.width) - 1;
-        }
-
-        // Left:
-        else {
-
-            return (currentTile * SettingsManager.getInstance().TILE_SCALED_SIZE);
-        }
-    }
-
-    protected float obtainYPosition(float ySpeed) {
-
-        int currentTile = (int) (this.hitBox.y / SettingsManager.getInstance().TILE_SCALED_SIZE);
-
-        // Falling:
-        if (ySpeed > 0.0f) {
-
-            return (currentTile * SettingsManager.getInstance().TILE_SCALED_SIZE) + (int) (SettingsManager.getInstance().TILE_SCALED_SIZE - this.hitBox.height) - 1;
-        }
-
-        // Jumping:
-        else {
-
-            return (currentTile * SettingsManager.getInstance().TILE_SCALED_SIZE);
-        }
+        return(this.hitBox);
     }
 }

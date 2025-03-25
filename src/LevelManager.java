@@ -6,17 +6,30 @@ import java.io.*;
 
 public class LevelManager {
 
+    // CONSTANTS:
+    private final static int TOPBORDER = (int)(0.2 * SettingsManager.getInstance().GAME_HEIGHT);
+    private final static int BOTTOMBORDER = (int)(0.8 * SettingsManager.getInstance().GAME_HEIGHT);
+    private final static int LEFTBORDER = (int)(0.2 * SettingsManager.getInstance().GAME_WIDTH);
+    private final static int RIGHTBORDER = (int)(0.8 * SettingsManager.getInstance().GAME_WIDTH);
+
     // DEPENDENCIES:
-    private Game game;
+    private Game game = null;
 
     // PROPERTIES:
-    private Tile[][] tiles;
+    public int width = 0;
+    public int height = 0;
+    public int levelWidth = 0;
+    public int levelHeight = 0;
+    public int xLevelOffset = 0;
+    public int yLevelOffset = 0;
+    private int xMaxOffset = 0;
+    private int yMaxOffset = 0;
+    private Tile[][] tiles = null;
     // we can do something similar for enemies and collectables where we have an array of them.
 
 
     public LevelManager() {
 
-        this.tiles = new Tile[SettingsManager.getInstance().COLUMNS][SettingsManager.getInstance().ROWS];
     }
 
     public void init(Game game) {
@@ -25,6 +38,15 @@ public class LevelManager {
     }
 
     public void loadLevel(BufferedImage levelImage) {
+
+        this.width = levelImage.getWidth();
+        this.height = levelImage.getHeight();
+        this.levelWidth = levelImage.getWidth() * SettingsManager.getInstance().TILE_SCALED_SIZE;
+        this.levelHeight = levelImage.getHeight() * SettingsManager.getInstance().TILE_SCALED_SIZE;
+        this.xMaxOffset = (this.levelWidth - SettingsManager.getInstance().COLUMNS) * SettingsManager.getInstance().TILE_SCALED_SIZE;
+        this.yMaxOffset = (this.levelHeight - SettingsManager.getInstance().ROWS) * SettingsManager.getInstance().TILE_SCALED_SIZE;
+
+        this.tiles = new Tile[this.width][this.height];
 
         // NOTE(SAVIZ): It is assumed that each image consists of a grid of one-pixel-sized cells, arranged in rows and columns, where each cell contains an RGB value for red, green, or blue, ranging from 0 to 255.
 
@@ -92,24 +114,67 @@ public class LevelManager {
 
     public void update() {
 
-        // I honestly don't know why I have this here...
+        int playerX = (int) this.game.getPlayer().getHitBox().getX();
+        int diffX = playerX - this.xLevelOffset;
+
+        int playerY = (int) this.game.getPlayer().getHitBox().getY();
+        int diffY = playerY - this.yLevelOffset;
+
+        // X:
+        if(diffX > this.RIGHTBORDER) {
+
+            this.xLevelOffset += diffX - this.RIGHTBORDER;
+        }
+
+        else if(diffX < this.LEFTBORDER) {
+
+            this.xLevelOffset += diffX - this.LEFTBORDER;
+        }
+
+        if(this.xLevelOffset > this.xMaxOffset) {
+
+            this.xLevelOffset = this.xMaxOffset;
+        }
+
+        else if(this.xLevelOffset < 0) {
+
+            this.xLevelOffset = 0;
+        }
+
+
+        // Y:
+        if(diffY > this.TOPBORDER) {
+
+            this.yLevelOffset += diffY - this.TOPBORDER;
+        }
+
+        else if(diffY < this.BOTTOMBORDER) {
+
+            this.yLevelOffset += diffY - this.LEFTBORDER;
+        }
+
+        if(this.yLevelOffset > this.yMaxOffset) {
+
+            this.yLevelOffset = this.yMaxOffset;
+        }
+
+        else if(this.yLevelOffset < 0) {
+
+            this.yLevelOffset = 0;
+        }
     }
 
     public void render(Graphics graphics) {
 
-        // TODO(SAVIZ): For transitioning between levels, what you can do is add a boolean 'isLoading' to the levelmanager and have it be changed during teh loading method. Here you can check it and fully withdraw if we are in loading phase.
-
-        int height = SettingsManager.getInstance().ROWS;
-        int width = SettingsManager.getInstance().COLUMNS;
         int scale = SettingsManager.getInstance().TILE_SCALED_SIZE;
 
-        for (int yCoordinate = 0; yCoordinate < height; yCoordinate++) {
+        for (int yCoordinate = 0; yCoordinate < this.height; yCoordinate++) {
 
-            for (int xCoordinate = 0; xCoordinate < width; xCoordinate++) {
+            for (int xCoordinate = 0; xCoordinate < this.width; xCoordinate++) {
 
                 Tile tile = tiles[xCoordinate][yCoordinate];
 
-                graphics.drawImage(ResourceManager.getInstance().getImageUsingKey(tile.imageKey), tile.xCoordinate, tile.yCoordinate, scale, scale, null);
+                graphics.drawImage(ResourceManager.getInstance().getImageUsingKey(tile.imageKey), tile.xCoordinate - this.xLevelOffset, tile.yCoordinate - this.yLevelOffset, scale, scale, null);
             }
         }
     }
