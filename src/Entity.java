@@ -95,7 +95,7 @@ public abstract class Entity {
     protected void renderHitBox(Graphics graphics) {
 
         graphics.setColor(Color.GREEN);
-        graphics.drawRect((int)this.hitBox.x, (int)this.hitBox.y, (int)this.hitBox.width, (int)this.hitBox.height);
+        graphics.drawRect((int)this.hitBox.x - this.game.getLevelManager().xLevelOffset, (int)this.hitBox.y - this.game.getLevelManager().yLevelOffset, (int)this.hitBox.width, (int)this.hitBox.height);
     }
 
     protected boolean willCollide(float xFutureCoordinate, float yFutureCoordinate) {

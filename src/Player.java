@@ -50,10 +50,10 @@ public class Player extends Entity {
         switch(super.direction) {
 
             case EAST:
-                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)(super.xCoordinate) - this.game.getLevelManager().xLevelOffset, (int)(super.yCoordinate) - this.game.getLevelManager().yLevelOffset, super.width, super.height, null);
+                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)(super.xCoordinate) - super.game.getLevelManager().xLevelOffset, (int)(super.yCoordinate) - super.game.getLevelManager().yLevelOffset, super.width, super.height, null);
                 break;
             case WEST:
-                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)(super.xCoordinate) + super.width - this.game.getLevelManager().xLevelOffset, (int)(super.yCoordinate) - this.game.getLevelManager().yLevelOffset, -super.width, super.height, null);
+                graphics.drawImage(this.animations[super.state.ordinal()][this.animationIndex], (int)(super.xCoordinate) + super.width - super.game.getLevelManager().xLevelOffset, (int)(super.yCoordinate) - super.game.getLevelManager().yLevelOffset, -super.width, super.height, null);
                 break;
             default:
                 // We should never encounter this case.
