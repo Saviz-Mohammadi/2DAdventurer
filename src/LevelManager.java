@@ -23,8 +23,7 @@ public class LevelManager {
     private int xMaxOffset = 0;
     private int yMaxOffset = 0;
     private Tile[][] tiles = null;
-    // we can do something similar for enemies and collectables where we have an array of them.
-
+    private ArrayList<KeyCard> keyCards = null;
 
     public LevelManager() {
 
@@ -43,12 +42,14 @@ public class LevelManager {
         this.yMaxOffset = (this.levelHeight - SettingsManager.getInstance().ROWS) * SettingsManager.getInstance().TILE_SCALED_SIZE;
 
         this.tiles = new Tile[this.levelWidth][this.levelHeight];
+        this.keyCards = new ArrayList<KeyCard>();
 
         // NOTE(SAVIZ): It is assumed that each image consists of a grid of one-pixel-sized cells, arranged in rows and columns, where each cell contains an RGB value for red, green, or blue, ranging from 0 to 255.
 
         // NOTE(SAVIZ): This part is tricky, so let me explain. We have two nested for-loops that iterate through each coordinate tile color in our image. Based on the color, we determine what type of element is at that position—whether it's a tile, an enemy, or a collectable. Once identified, we need to create these elements and potentially manage their rendering, spawning, and other properties. The most important aspect is their location, which each element will store internally. However, the key challenge is that we cannot simply assign the x and y coordinates directly from our loops, as these values only represent the row and column indices of the elements within the grid. Instead, we must adjust their position accurately by applying an offset equal to their size, ensuring proper alignment. Since all elements should share a uniform size, this offset will be consistent across all of them.
 
         int offest = SettingsManager.getInstance().TILE_SCALED_SIZE;
+        int scale = SettingsManager.getInstance().TILE_SCALED_SIZE;
 
         for (int yCoordinate = 0; yCoordinate < levelImage.getHeight(); yCoordinate++) {
 
@@ -68,7 +69,7 @@ public class LevelManager {
 
                 tile.xCoordinate = xCoordinate * offest;
                 tile.yCoordinate = yCoordinate * offest;
-                tile.imageKey = "tile_0000";
+                tile.imageKeyCard = "tile_0000";
                 tile.isSolid = false;
 
                 // TILES (GREEN):
@@ -79,7 +80,7 @@ public class LevelManager {
                         case 50:
                             tile.xCoordinate = xCoordinate * offest;
                             tile.yCoordinate = yCoordinate * offest;
-                            tile.imageKey = "tile_0034";
+                            tile.imageKeyCard = "tile_0034";
                             tile.isSolid = true;
                             break;
                         default: // If the number is outside of this range, then it is an incorrect value and we will assign some default tile to this coordinate:
@@ -97,8 +98,11 @@ public class LevelManager {
                 // COLLECTABLES (BLUE):
                 else if (blue >= red && blue >= green) {
 
-                    // I have on idea what we plan for collecatbles such as keys and other items so let it just be here for now.
-                    // for default for collecables you can just opt for not creating them or something else...
+                    KeyCard keyCard = new KeyCard();
+
+                    keyCard.init(this.game, xCoordinate * offest, yCoordinate * offest, scale, scale, true, "image");
+
+                    this.keyCards.append(keyCard);
                 }
 
                 tiles[xCoordinate][yCoordinate] = tile;
@@ -107,6 +111,24 @@ public class LevelManager {
     }
 
     public void update() {
+
+        this.updateTiles();
+        this.updateKeyCards();
+    }
+
+    public void render(Graphics graphics) {
+
+        this.renderTiles(graphics);
+        this.renderKeyCards(graphics);
+    }
+
+    // GETTERS:
+    public Tile[][] getTiles() {
+
+        return(this.tiles);
+    }
+
+    private void updateTiles() {
 
         // X:
         int playerX = (int) this.game.getPlayer().getXCoordinate();
@@ -157,7 +179,15 @@ public class LevelManager {
         }
     }
 
-    public void render(Graphics graphics) {
+    private void updateKeyCards() {
+
+        for (KeyCard keyCard : this.keyCards) {
+
+            keyCard.update();
+        }
+    }
+
+    private void renderTiles(Graphics graphics) {
 
         int scale = SettingsManager.getInstance().TILE_SCALED_SIZE;
 
@@ -167,13 +197,16 @@ public class LevelManager {
 
                 Tile tile = tiles[xCoordinate][yCoordinate];
 
-                graphics.drawImage(ResourceManager.getInstance().getImageUsingKey(tile.imageKey), tile.xCoordinate - this.xLevelOffset, tile.yCoordinate - this.yLevelOffset, scale, scale, null);
+                graphics.drawImage(ResourceManager.getInstance().getImageUsingKeyCard(tile.imageKeyCard), tile.xCoordinate - this.xLevelOffset, tile.yCoordinate - this.yLevelOffset, scale, scale, null);
             }
         }
     }
 
-    public Tile[][] getTiles() {
+    private void renderKeyCards(Graphics graphics) {
 
-        return(this.tiles);
+        for (KeyCard keyCard : this.keyCards) {
+
+            keyCard.render(graphics);
+        }
     }
 }

@@ -16,8 +16,9 @@ public class SettingsManager {
     public final static int TILE_DEFAULT_SIZE = 8;
     public final static int SCALE = 4;
     public final static int TILE_SCALED_SIZE = TILE_DEFAULT_SIZE * SCALE;
-    public final static int COLUMNS = 50;
-    public final static int ROWS = 30;
+    // TODO(SAVIZ): We could have a piece of code in our 'Game' class that can determine this based on witdth and height:
+    public final static int COLUMNS = 16;
+    public final static int ROWS = 9;
     public final static int GAME_WIDTH = COLUMNS * TILE_SCALED_SIZE;
     public final static int GAME_HEIGHT = ROWS * TILE_SCALED_SIZE;
 
